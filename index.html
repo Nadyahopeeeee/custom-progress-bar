@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- <link rel="stylesheet" href="./style.css" /> -->
     <title>Document</title>
   </head>
   <body>
@@ -23,8 +22,12 @@
           height: 20px;
           border: 1px solid #ccc;
         }
-        button {
+        #progress-info {
           margin-top: 10px;
+          font-size: 14px;
+        }
+        button {
+          margin-top: 30px;
           padding: 5px;
           background-color: #4caf50;
           border: none;
@@ -32,11 +35,15 @@
           cursor: pointer;
         }
       </style>
-      <div id="container"><div id="bar"></div></div>
+      <div id="container">
+        <div id="bar"></div>
+        <div id="progress-info">0%</div>
+      </div>
       <button id="btn">Start/Stop</button>
     </template>
 
     <progress-bar></progress-bar>
+
     <script>
       class ProgressBar extends HTMLElement {
         constructor() {
@@ -46,22 +53,27 @@
             document.importNode(document.querySelector('#progress-bar-template').content, true),
           );
           this.bar = this.shadowRoot.querySelector('#bar');
+          this.progressInfo = this.shadowRoot.querySelector('#progress-info');
           this.btn = this.shadowRoot.querySelector('#btn');
           this.btn.addEventListener('click', this.toggleAnimation.bind(this));
           this.play = true;
           this.speed = 0.2;
           this.progress = 0;
         }
+
         connectedCallback() {
           requestAnimationFrame(this.animate.bind(this));
         }
+
         disconnectedCallback() {
           cancelAnimationFrame(this.animationFrame);
         }
+
         animate() {
           if (this.progress < 100 && this.play) {
             this.progress += this.speed;
             this.bar.style.width = `${this.progress}%`;
+            this.progressInfo.innerText = `Loading: ${Math.round(this.progress)}%`;
           } else if (this.progress >= 100 && this.play) {
             this.play = false;
             this.disconnectedCallback();
@@ -85,6 +97,7 @@
           }
         }
       }
+
       customElements.define('progress-bar', ProgressBar);
     </script>
   </body>
