@@ -17,7 +17,6 @@
           width: 0;
           height: 20px;
           background-color: #2196f3;
-          transition: width 0.5s ease-in-out;
         }
         #container {
           width: 100%;
@@ -49,6 +48,9 @@
           this.bar = this.shadowRoot.querySelector('#bar');
           this.btn = this.shadowRoot.querySelector('#btn');
           this.btn.addEventListener('click', this.toggleAnimation.bind(this));
+          this.play = true;
+          this.speed = 0.2;
+          this.progress = 0;
         }
         connectedCallback() {
           requestAnimationFrame(this.animate.bind(this));
@@ -57,21 +59,29 @@
           cancelAnimationFrame(this.animationFrame);
         }
         animate() {
-          const progress = parseInt(this.bar.style.width) || 0;
-          if (progress < 100) {
-            const increment = Math.min(10, 100 - progress);
-            this.bar.style.width = `${progress + increment}%`;
-          } else {
+          if (this.progress < 100 && this.play) {
+            this.progress += this.speed;
+            this.bar.style.width = `${this.progress}%`;
+          } else if (this.progress >= 100 && this.play) {
+            this.play = false;
+            this.disconnectedCallback();
+          } else if (!this.progress && this.play) {
             this.bar.style.width = '0';
           }
-          this.animationFrame = requestAnimationFrame(this.animate.bind(this));
-        }
-        toggleAnimation() {
-          if (this.animationFrame) {
-            cancelAnimationFrame(this.animationFrame);
-            this.animationFrame = null;
-          } else {
+
+          if (this.play) {
             this.animationFrame = requestAnimationFrame(this.animate.bind(this));
+          }
+        }
+
+        toggleAnimation() {
+          if (this.play) {
+            if (this.animationFrame) {
+              cancelAnimationFrame(this.animationFrame);
+              this.animationFrame = null;
+            } else {
+              this.animationFrame = requestAnimationFrame(this.animate.bind(this));
+            }
           }
         }
       }
