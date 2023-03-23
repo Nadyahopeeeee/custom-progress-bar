@@ -44,61 +44,6 @@
 
     <progress-bar></progress-bar>
 
-    <script>
-      class ProgressBar extends HTMLElement {
-        constructor() {
-          super();
-          this.attachShadow({ mode: 'open' });
-          this.shadowRoot.appendChild(
-            document.importNode(document.querySelector('#progress-bar-template').content, true),
-          );
-          this.bar = this.shadowRoot.querySelector('#bar');
-          this.progressInfo = this.shadowRoot.querySelector('#progress-info');
-          this.btn = this.shadowRoot.querySelector('#btn');
-          this.btn.addEventListener('click', this.toggleAnimation.bind(this));
-          this.play = true;
-          this.speed = 0.2;
-          this.progress = 0;
-        }
-
-        connectedCallback() {
-          requestAnimationFrame(this.animate.bind(this));
-        }
-
-        disconnectedCallback() {
-          cancelAnimationFrame(this.animationFrame);
-        }
-
-        animate() {
-          if (this.progress < 100 && this.play) {
-            this.progress += this.speed;
-            this.bar.style.width = `${this.progress}%`;
-            this.progressInfo.innerText = `Loading: ${Math.round(this.progress)}%`;
-          } else if (this.progress >= 100 && this.play) {
-            this.play = false;
-            this.disconnectedCallback();
-          } else if (!this.progress && this.play) {
-            this.bar.style.width = '0';
-          }
-
-          if (this.play) {
-            this.animationFrame = requestAnimationFrame(this.animate.bind(this));
-          }
-        }
-
-        toggleAnimation() {
-          if (this.play) {
-            if (this.animationFrame) {
-              cancelAnimationFrame(this.animationFrame);
-              this.animationFrame = null;
-            } else {
-              this.animationFrame = requestAnimationFrame(this.animate.bind(this));
-            }
-          }
-        }
-      }
-
-      customElements.define('progress-bar', ProgressBar);
-    </script>
+    <script src="./script.js"></script>
   </body>
 </html>
