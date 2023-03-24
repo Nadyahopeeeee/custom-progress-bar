@@ -4,46 +4,11 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Custom progress bar</title>
   </head>
   <body>
-    <template id="progress-bar-template">
-      <style>
-        :host {
-          display: block;
-        }
-        #bar {
-          width: 0;
-          height: 20px;
-          background-color: #2196f3;
-        }
-        #container {
-          width: 100%;
-          height: 20px;
-          border: 1px solid #ccc;
-        }
-        #progress-info {
-          margin-top: 10px;
-          font-size: 14px;
-        }
-        button {
-          margin-top: 30px;
-          padding: 5px;
-          background-color: #4caf50;
-          border: none;
-          color: white;
-          cursor: pointer;
-        }
-      </style>
-      <div id="container">
-        <div id="bar"></div>
-        <div id="progress-info">0%</div>
-      </div>
-      <button id="btn">Start/Stop</button>
-    </template>
-
     <progress-bar></progress-bar>
 
-    <script src="./script.js"></script>
+    <script defer src="./components/ProgressBar/index.js"></script>
   </body>
 </html>
